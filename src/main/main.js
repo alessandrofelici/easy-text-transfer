@@ -7,6 +7,8 @@ const createWindow = () => {
   })
 
   win.loadFile('./src/renderer/index.html')
+  // Open Chrome dev tools
+  win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
