@@ -1,0 +1,19 @@
+{
+  "name": "easy-text-transfer",
+  "version": "1.0.0",
+  "description": "An application that allows seamless transition of quick notes, messages, or links from one device to another",
+  "main": "./src/main/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alessandrofelici/easy-text-transfer"
+  },
+  "author": "Alessandro Felici",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^38.4.0"
+  }
+}
