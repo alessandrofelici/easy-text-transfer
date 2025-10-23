@@ -5,15 +5,12 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
+      content="default-src 'self'; script-src 'self' 'unsafe-eval'"
     />
     <title>Hello from Electron renderer!</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <textarea rows=20 cols=20 placeholder="Type a message here" autofocus className="textarea"></textarea>
+    <script src="renderer.js"></script>
   </body>
 </html>
