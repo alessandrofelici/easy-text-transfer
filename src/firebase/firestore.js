@@ -48,13 +48,16 @@ const saveText = async (text) => {
 //   console.log("Saved");
 // };
 
-const loadText = async () => {
-  let ret = "";
-  const querySnapshot = await getDocs(collection(db, "users"));
-  querySnapshot.forEach((doc) => {
-    ret += `\n${doc.id} => ${doc.data()}`;
-  });
-  return ret
+const loadText = () => {
+  // TODO get actual data
+  // TODO add case if user data does not exist yet
+  return "Preload.js works!";
+  // let ret = "";
+  // const querySnapshot = await getDocs(collection(db, "users"));
+  // querySnapshot.forEach((doc) => {
+  //   ret += `\n${doc.id} => ${doc.data()}`;
+  // });
+  // return ret
 };
 
 module.exports = { saveText, loadText };

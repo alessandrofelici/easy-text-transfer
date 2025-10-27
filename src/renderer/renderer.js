@@ -1,7 +1,7 @@
-const { saveText, loadText } = require("../firebase/firestore");
 
 
 const textBox = document.getElementById('text-box');
+textBox.value = contactFirebase.getData();
 
 setTimeout(() => {
   textBox.disabled = false;
@@ -9,14 +9,14 @@ setTimeout(() => {
 
 // Limit number of writes to database
 let saving = false;
-let text = ""
+let text = "";
 
 textBox.addEventListener("keyup", () => {
   if (!saving) {
     console.log("Saving...")
     saving = true;
     setTimeout(() => {
-      saveText(text)
+      contactFirebase.setData(text);
       saving = false;
     }, 3000);
   }
