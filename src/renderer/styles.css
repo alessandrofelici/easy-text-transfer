@@ -1,3 +1,7 @@
 .text-box {
   resize: none;
 }
+
+.textbox:disabled {
+  background-color: gray;
+}

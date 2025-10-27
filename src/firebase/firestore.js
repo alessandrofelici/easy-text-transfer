@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, addDoc, getDocs } = require('firebase/firestore');
+const { getFirestore, collection, addDoc, getDocs, doc, updateDoc } = require('firebase/firestore');
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -21,36 +21,34 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-const createSamples = async () => {
-  try {
-    const docRef = await addDoc(collection(db, "users"), {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-
-// Add a second document with a generated ID.
-
-  try {
-    const docRef = await addDoc(collection(db, "users"), {
-      first: "Alan",
-      middle: "Mathison",
-      last: "Turing",
-      born: 1912
-    });
-    console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-
+const saveText = async (text) => {
+  const userRef = doc(db, 'users', '4j5rXHDUkamtxZMm3EBF');
+  await updateDoc(userRef, {
+    text: text
+  });
   console.log("Saved");
 };
 
-const retrieveData = async () => {
+// TODO: Expand to more users
+// -> separate create & edit functions
+// -> more ids in users
+
+// const createUser = async (text) => {
+//   try {
+//     const docRef = await addDoc(collection(db, "users"), {
+//       name: "CHANGE ME",
+//       text: text
+//     });
+//     console.log("Document written with ID: ", docRef.id);
+//     // TOOD save this internally
+//   } catch (e) {
+//     console.error("Error adding document: ", e);
+//   }
+
+//   console.log("Saved");
+// };
+
+const loadText = async () => {
   let ret = "";
   const querySnapshot = await getDocs(collection(db, "users"));
   querySnapshot.forEach((doc) => {
@@ -59,4 +57,4 @@ const retrieveData = async () => {
   return ret
 };
 
-module.exports = { createSamples, retrieveData };
+module.exports = { saveText, loadText };
