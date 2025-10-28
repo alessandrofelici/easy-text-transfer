@@ -1,6 +1,6 @@
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, getDoc, doc, updateDoc } = require('firebase/firestore');
-const firebaseConfig = require('./firebase.config.json');
+const firebaseConfig = require('../../../shared/firebase.config.json');
 
 
 const app = initializeApp(firebaseConfig);
