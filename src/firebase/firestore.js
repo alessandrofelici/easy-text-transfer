@@ -1,24 +1,10 @@
-// Import the functions you need from the SDKs you need
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, getDoc, doc, updateDoc } = require('firebase/firestore');
+const firebaseConfig = require('./firebase.config.json');
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAAUTKgOvVnZvPJ_Qa8lOttKyoPwKpA95Y",
-  authDomain: "easy-text-transfer.firebaseapp.com",
-  databaseURL: "https://easy-text-transfer-default-rtdb.firebaseio.com",
-  projectId: "easy-text-transfer",
-  storageBucket: "easy-text-transfer.firebasestorage.app",
-  messagingSenderId: "815628299779",
-  appId: "1:815628299779:web:34c357ce0f78ca3f142836",
-  measurementId: "G-4CY3NCDP35"
-};
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
 const saveText = async (text) => {
