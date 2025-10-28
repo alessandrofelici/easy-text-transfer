@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, addDoc, getDocs, doc, updateDoc } = require('firebase/firestore');
+const { getFirestore, collection, addDoc, getDoc, doc, updateDoc } = require('firebase/firestore');
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -48,16 +48,17 @@ const saveText = async (text) => {
 //   console.log("Saved");
 // };
 
-const loadText = () => {
-  // TODO get actual data
+const loadText = async () => {
   // TODO add case if user data does not exist yet
-  return "Preload.js works!";
-  // let ret = "";
-  // const querySnapshot = await getDocs(collection(db, "users"));
-  // querySnapshot.forEach((doc) => {
-  //   ret += `\n${doc.id} => ${doc.data()}`;
-  // });
-  // return ret
+  const docRef = doc(db, 'users', '4j5rXHDUkamtxZMm3EBF');
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data().text
+  }
+  else {
+    console.log("User not found");
+  }
 };
 
 module.exports = { saveText, loadText };

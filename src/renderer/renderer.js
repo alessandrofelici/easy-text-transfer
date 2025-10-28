@@ -1,11 +1,11 @@
 
 
 const textBox = document.getElementById('text-box');
-textBox.value = contactFirebase.getData();
 
-setTimeout(() => {
+contactFirebase.getData().then((data) => {
+  textBox.value = data;
   textBox.disabled = false;
-}, 3000);
+});
 
 // Limit number of writes to database
 let saving = false;
