@@ -1,24 +1,27 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dimensions, DimensionValue, StyleSheet } from "react-native";
 import { TextInput, View } from "react-native";
 import { saveText, loadText } from "../firebase/firestore"
 
 export default function Index() {
   const [message, setMessage] = useState<string>("");
-  const [loaded, setLoaded] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(true);
   
-  let saving: boolean = false;
+  const saving = useRef(false);
+  const messageRef = useRef(message);
+  
   const interval: number = 0.5;
-  const saveMessage = (text: string) => {
-    setMessage(text);
-    if (!saving) {
-      saving = true;
-      setTimeout(() => {
-        saveText(message);
-        saving = false;
-      }, interval*1000)
+  useEffect(() => {
+    messageRef.current = message;
+    if (!saving.current) {
+      saving.current = true
+      setTimeout(() => { 
+        console.log('Saving message:', messageRef.current);
+        saveText(messageRef.current);
+        saving.current = false;
+      }, interval*1000);
     }
-  };
+  }, [message])
 
   return (
     <View
@@ -30,7 +33,7 @@ export default function Index() {
     >
       <TextInput
         value={message}
-        onChangeText={saveMessage}
+        onChangeText={setMessage}
         style={styles.input}
         multiline={true}
         editable={loaded}
