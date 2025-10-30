@@ -5,18 +5,20 @@ import { saveText, loadText } from "../firebase/firestore"
 
 export default function Index() {
   const [message, setMessage] = useState<string>("");
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [color, setColor] = useState("gray");
   
-  loadText().then((text) => {
-    setMessage(text);
-    // TODO dont need use state for this
-    setLoaded(true);
-    setColor("white");
-  });
-
+  const loaded = useRef(false);
   const saving = useRef(false);
   const messageRef = useRef(message);
+
+  if (!loaded.current) {
+    loadText().then((text) => {
+      setMessage(text);
+      loaded.current = true;
+      setColor("white");
+    });
+  }
+
   
   const interval: number = 0.5;
   useEffect(() => {
@@ -44,7 +46,7 @@ export default function Index() {
         onChangeText={setMessage}
         style={[styles.input, {backgroundColor: color}]}
         multiline={true}
-        editable={loaded}
+        editable={loaded.current}
       />
     </View>
   );
