@@ -5,8 +5,16 @@ import { saveText, loadText } from "../firebase/firestore"
 
 export default function Index() {
   const [message, setMessage] = useState<string>("");
-  const [loaded, setLoaded] = useState<boolean>(true);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [color, setColor] = useState("gray");
   
+  loadText().then((text) => {
+    setMessage(text);
+    // TODO dont need use state for this
+    setLoaded(true);
+    setColor("white");
+  });
+
   const saving = useRef(false);
   const messageRef = useRef(message);
   
@@ -34,7 +42,7 @@ export default function Index() {
       <TextInput
         value={message}
         onChangeText={setMessage}
-        style={styles.input}
+        style={[styles.input, {backgroundColor: color}]}
         multiline={true}
         editable={loaded}
       />
@@ -54,5 +62,6 @@ const styles = StyleSheet.create({
     height: marginY,
     borderWidth: 1,
     padding: 10,
+    color: 'gray'
   }
 })
