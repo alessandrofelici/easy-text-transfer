@@ -9,10 +9,21 @@ const db = getFirestore(app);
 
 const saveText = async (text) => {
   const userRef = doc(db, 'users', '4j5rXHDUkamtxZMm3EBF');
-  await updateDoc(userRef, {
-    text: text
-  });
+  await updateDoc(userRef, { text });
   console.log("Saved");
+};
+
+const loadText = async () => {
+  // TODO add case if user data does not exist yet
+  const docRef = doc(db, 'users', '4j5rXHDUkamtxZMm3EBF');
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data().text
+  }
+  else {
+    console.log("User not found");
+  }
 };
 
 // TODO: Expand to more users
@@ -33,18 +44,5 @@ const saveText = async (text) => {
 
 //   console.log("Saved");
 // };
-
-const loadText = async () => {
-  // TODO add case if user data does not exist yet
-  const docRef = doc(db, 'users', '4j5rXHDUkamtxZMm3EBF');
-  const docSnap = await getDoc(docRef);
-
-  if (docSnap.exists()) {
-    return docSnap.data().text
-  }
-  else {
-    console.log("User not found");
-  }
-};
 
 module.exports = { saveText, loadText };
