@@ -1,9 +1,24 @@
 import { useState } from "react";
 import { Dimensions, DimensionValue, StyleSheet } from "react-native";
 import { TextInput, View } from "react-native";
+import { saveText, loadText } from "../firebase/firestore"
 
 export default function Index() {
   const [message, setMessage] = useState<string>("");
+  const [loaded, setLoaded] = useState<boolean>(false);
+  
+  let saving: boolean = false;
+  const interval: number = 0.5;
+  const saveMessage = (text: string) => {
+    setMessage(text);
+    if (!saving) {
+      saving = true;
+      setTimeout(() => {
+        saveText(message);
+        saving = false;
+      }, interval*1000)
+    }
+  };
 
   return (
     <View
@@ -15,9 +30,10 @@ export default function Index() {
     >
       <TextInput
         value={message}
-        onChangeText={setMessage}
+        onChangeText={saveMessage}
         style={styles.input}
         multiline={true}
+        editable={loaded}
       />
     </View>
   );
