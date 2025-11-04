@@ -5,10 +5,12 @@ import { saveText, loadText } from "../firebase/firestore"
 
 export default function Index() {
   const [message, setMessage] = useState<string>("");
-  const [color, setColor] = useState("gray");
+  const [color, setColor] = useState<string>("gray");
   
   const loaded = useRef(false);
   const saving = useRef(false);
+  const typing = useRef(false);
+  const activity = useRef(Date.now());
   const messageRef = useRef(message);
 
   if (!loaded.current) {
@@ -19,9 +21,18 @@ export default function Index() {
     });
   }
 
+  const handleTextChange = (message: string) => {
+    activity.current = Date.now();
+    typing.current = true;
+    setMessage(message);
+  }
   
   const interval: number = 0.5;
   useEffect(() => {
+    if (!typing.current) {
+      return;
+    }
+
     messageRef.current = message;
     if (!saving.current) {
       saving.current = true
@@ -33,6 +44,19 @@ export default function Index() {
     }
   }, [message])
 
+  setInterval(() => {
+    if (Date.now() - activity.current > 5*1000 && typing.current) {
+      typing.current = false;
+      console.log("User inactive");
+    }
+
+    if (!saving.current && !typing.current) {
+      loadText().then((newMessage) => {
+        setMessage(newMessage);
+      });
+    }
+  }, interval*1000)
+
   return (
     <View
       style={{
@@ -43,7 +67,7 @@ export default function Index() {
     >
       <TextInput
         value={message}
-        onChangeText={setMessage}
+        onChangeText={handleTextChange}
         style={[styles.input, {backgroundColor: color}]}
         multiline={true}
         editable={loaded.current}

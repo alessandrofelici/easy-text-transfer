@@ -30,9 +30,9 @@ textBox.addEventListener("keyup", () => {
   text = textBox.value
 });
 
-// Retrieve data from other devices every 3 seconds, if not saving
+// Retrieve data from other devices every 3 seconds, if not saving or typing
 setInterval(async () => { 
-  if (lastKeyPress && Date.now() - lastKeyPress > 5*1000) {
+  if (lastKeyPress && Date.now() - lastKeyPress > 5*1000 && typing) {
     typing = false;
     console.log("User inactive");
   }
