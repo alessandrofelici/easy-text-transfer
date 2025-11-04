@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Dimensions, DimensionValue, StyleSheet } from "react-native";
+import { Dimensions, DimensionValue, Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { TextInput, View } from "react-native";
 import { saveText, loadText } from "../firebase/firestore"
 
@@ -58,21 +58,23 @@ export default function Index() {
   }, interval*1000)
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <TextInput
-        value={message}
-        onChangeText={handleTextChange}
-        style={[styles.input, {backgroundColor: color}]}
-        multiline={true}
-        editable={loaded.current}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TextInput
+          value={message}
+          onChangeText={handleTextChange}
+          style={[styles.input, {backgroundColor: color}]}
+          multiline={true}
+          editable={loaded.current}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
