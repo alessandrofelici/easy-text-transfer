@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { Dimensions, DimensionValue, Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Alert, Dimensions, DimensionValue, Keyboard, Linking, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { TextInput, View } from "react-native";
-import { saveText, loadText } from "../firebase/firestore"
+import { saveText, loadText } from "../firebase/firestore";
+import { Button } from "@react-navigation/elements";
+import * as Notifications from 'expo-notifications';
 
 export default function Index() {
   const [message, setMessage] = useState<string>("");
@@ -25,7 +27,22 @@ export default function Index() {
     activity.current = Date.now();
     typing.current = true;
     setMessage(message);
-  }
+  };
+
+  const handlePress = () => {
+    // Check for link in text
+    const urlPattern = /https:\/\/[^\s]+/;
+    if (urlPattern.test(message)) {
+      Linking.openURL(message)
+    }
+    else {
+      Alert.alert(
+        'No link found',
+        'Please insert a valid url.',
+        [{ text: 'OK' }]
+      )
+    }
+  };
   
   const interval: number = 0.5;
   useEffect(() => {
@@ -73,6 +90,12 @@ export default function Index() {
           multiline={true}
           editable={loaded.current}
         />
+        <Button
+          style={styles.button}
+          onPressIn={handlePress}
+          >
+          Follow Link
+        </Button>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -91,5 +114,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     color: 'gray'
+  },
+  button: {
+    marginTop: 15
   }
 })
