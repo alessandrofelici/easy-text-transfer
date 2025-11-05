@@ -42,3 +42,24 @@ setInterval(async () => {
     });
   }
 }, interval*1000);
+
+const button = document.getElementById("url-button");
+
+button.addEventListener("click", () => {
+    // Check for link in text
+    const urlPattern = /https:\/\/[^\s]+/;
+    if (urlPattern.test(textBox.value)) {
+      window.open(textBox.value);
+    }
+    else {
+      const notif = document.getElementById('notification');
+      document.getElementById('notification-message').textContent = "No valid url found.";
+      notif.classList.remove('hidden');
+      
+      setTimeout(() => hideNotification(), 3000);
+    }
+});
+
+const hideNotification = () => {
+  document.getElementById('notification').classList.add('hidden');
+}

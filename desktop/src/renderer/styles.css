@@ -5,3 +5,28 @@
 .textbox:disabled {
   background-color: gray;
 }
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #333;
+  color: white;
+  padding: 16px;
+  border-radius: 8px;
+  min-width: 250px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: opacity 0.3s;
+}
+
+.notification.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 10px;
+}
