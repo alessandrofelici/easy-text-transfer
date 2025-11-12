@@ -1,5 +1,6 @@
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, getDoc, doc, updateDoc } = require('firebase/firestore');
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = require('firebase/auth');
 const firebaseConfig = require('../../../shared/firebase.config.json');
 
 
@@ -26,6 +27,38 @@ const loadText = async () => {
   }
 };
 
+const auth = getAuth();
+const signUp = (email, password) => {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed up
+      const user = userCredential.user;
+      // ...
+      console.log(user)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode + ": " + errorMessage);
+    })
+}
+
+const signIn = (email, password) => {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      // ...
+      console.log(user)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode + ": " + errorMessage);
+    })
+}
+
+
 // TODO: Expand to more users
 // -> separate create & edit functions
 // -> more ids in users
@@ -45,4 +78,4 @@ const loadText = async () => {
 //   console.log("Saved");
 // };
 
-module.exports = { saveText, loadText };
+module.exports = { saveText, loadText, signIn, signUp };
