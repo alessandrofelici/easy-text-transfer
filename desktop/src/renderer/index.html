@@ -12,23 +12,29 @@
     <link rel="stylesheet" href="styles/app.css">
   </head>
   <body>
-    <textarea
-      class="text-box"
-      id="text-box"
-      rows=20
-      cols=26
-      placeholder="Type a message here"
-      autofocus=true
-      disabled=true
-    ></textarea>
-    <div>
-      <button id="url-button">
-        Follow Link
-      </button>
+    <div id="loginPage">
+    
     </div>
-    <div id="notification" class="notification hidden">
-      <div id="notification-message"></div>
+    <div id="appPage">
+      <textarea
+        class="text-box"
+        id="text-box"
+        rows=20
+        cols=26
+        placeholder="Type a message here"
+        autofocus=true
+        disabled=true
+      ></textarea>
+      <div>
+        <button id="url-button">
+          Follow Link
+        </button>
+      </div>
+      <div id="notification" class="notification hidden">
+        <div id="notification-message"></div>
+      </div>
     </div>
-    <script src="renderer.js"></script>
+    
+    <script type="module" src="renderer.js"></script>
   </body>
 </html>
