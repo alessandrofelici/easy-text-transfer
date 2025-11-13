@@ -1,6 +1,36 @@
 
 export const renderAppView = () => {
-  const textBox = document.getElementById('text-box');
+  const appPage = document.createElement('div')
+  appPage.id = 'app-page'
+
+  const textBox = document.createElement('textarea');
+  textBox.className = 'text-box';
+  textBox.id = 'text-box';
+  textBox.rows = 20;
+  textBox.cols = 26;
+  textBox.placeholder = 'Type a message here';
+  textBox.autofocus = true;
+  textBox.disabled = true;
+
+  const button = document.createElement('div');
+  const urlButton = document.createElement('button');
+  urlButton.id = 'url-button';
+  urlButton.textContent = 'Follow Link';
+  button.appendChild(urlButton);
+
+  const notification = document.createElement('div');
+  notification.id = 'notification';
+  notification.className = 'notification hidden';
+
+  const notificationMessage = document.createElement('div');
+  notificationMessage.id = 'notification-message';
+  notification.appendChild(notificationMessage);
+
+  appPage.appendChild(textBox);
+  appPage.appendChild(button);
+  appPage.appendChild(notification);
+  document.body.appendChild(appPage)
+
   // Update time period in seconds
   const interval = 0.5;
 
@@ -43,8 +73,6 @@ export const renderAppView = () => {
     }
   }, interval*1000);
 
-  const button = document.getElementById("url-button");
-
   button.addEventListener("click", () => {
       // Check for link in text
       const urlPattern = /https:\/\/[^\s]+/;
@@ -52,9 +80,8 @@ export const renderAppView = () => {
         window.open(textBox.value);
       }
       else {
-        const notif = document.getElementById('notification');
-        document.getElementById('notification-message').textContent = "No valid url found.";
-        notif.classList.remove('hidden');
+        notificationMessage.textContent = "No valid url found.";
+        notification.classList.remove('hidden');
         
         setTimeout(() => hideNotification(), 3000);
       }

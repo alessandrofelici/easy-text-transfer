@@ -1,19 +1,19 @@
 import { renderAppView } from "./views/app.js";
 import { renderLoginView } from "./views/login.js";
 
-let viewName = 'app';
+const clearCurrentView = (element) => {
+  if (!element) {
+    return;
+  }
 
-const pages = ["loginPage", "appPage"]
-const clearCurrentView = () => {
-  // TODO take more dynamic approach, call each function to clear dom elems
-  pages.forEach(pageId => {
-    const pageElement = document.getElementById(pageId);
-    pageElement.style.display = 'none';
-  });
+  for (const child of element.children) {
+    clearCurrentView(child)
+  }
+  element.remove();
 }
 
-const showView = () => {
-  clearCurrentView();
+const showView = (viewName) => {
+  clearCurrentView(document.body.children[0]);
 
   if (viewName === 'login') {
     renderLoginView();
@@ -22,5 +22,4 @@ const showView = () => {
   }
 }
 
-
-showView();
+showView('app');
