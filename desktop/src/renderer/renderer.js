@@ -22,4 +22,4 @@ const showView = (viewName) => {
   }
 }
 
-showView('app');
+showView('login');

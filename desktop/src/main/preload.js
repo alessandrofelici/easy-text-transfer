@@ -1,5 +1,5 @@
 const { contextBridge } = require("electron");
-const { loadText, saveText } = require("../firebase/firestore");
+const { loadText, saveText, signIn, signUp } = require("../firebase/firestore");
 
 contextBridge.exposeInMainWorld('contactFirebase', {
     getData: async () => {
@@ -7,5 +7,11 @@ contextBridge.exposeInMainWorld('contactFirebase', {
     },
     setData: (text) => {
       saveText(text);
+    },
+    signIn: (email, password) => {
+      signIn(email, password);
+    },
+    signUp: (email, password) => {
+      signUp(email, password);
     },
 });
