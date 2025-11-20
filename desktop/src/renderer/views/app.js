@@ -12,11 +12,9 @@ export const renderAppView = () => {
   textBox.autofocus = true;
   textBox.disabled = true;
 
-  const button = document.createElement('div');
   const urlButton = document.createElement('button');
   urlButton.id = 'url-button';
   urlButton.textContent = 'Follow Link';
-  button.appendChild(urlButton);
 
   const notification = document.createElement('div');
   notification.id = 'notification';
@@ -27,7 +25,7 @@ export const renderAppView = () => {
   notification.appendChild(notificationMessage);
 
   appPage.appendChild(textBox);
-  appPage.appendChild(button);
+  appPage.appendChild(urlButton);
   appPage.appendChild(notification);
   document.body.appendChild(appPage)
 
@@ -73,7 +71,7 @@ export const renderAppView = () => {
     }
   }, interval*1000);
 
-  button.addEventListener("click", () => {
+  urlButton.addEventListener("click", () => {
       // Check for link in text
       const urlPattern = /https:\/\/[^\s]+/;
       if (urlPattern.test(textBox.value)) {

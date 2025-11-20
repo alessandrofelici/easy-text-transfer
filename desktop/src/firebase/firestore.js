@@ -28,11 +28,12 @@ const loadText = async () => {
 };
 
 const auth = getAuth();
-const signUp = (email, password) => {
-  createUserWithEmailAndPassword(auth, email, password)
+const signUp = async (email, password) => {
+  let user = null;
+  await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed up
-      const user = userCredential.user;
+      user = userCredential.user;
       // ...
       console.log(user)
     })
@@ -41,13 +42,15 @@ const signUp = (email, password) => {
       const errorMessage = error.message;
       console.log(errorCode + ": " + errorMessage);
     })
+  return user ? true : false;
 }
 
-const signIn = (email, password) => {
-  signInWithEmailAndPassword(auth, email, password)
+const signIn = async (email, password) => {
+  let user = null;
+  await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
-      const user = userCredential.user;
+      user = userCredential.user;
       // ...
       console.log(user)
     })
@@ -56,6 +59,7 @@ const signIn = (email, password) => {
       const errorMessage = error.message;
       console.log(errorCode + ": " + errorMessage);
     })
+  return user ? true : false;
 }
 
 

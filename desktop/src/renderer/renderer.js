@@ -16,7 +16,9 @@ const showView = (viewName) => {
   clearCurrentView(document.body.children[0]);
 
   if (viewName === 'login') {
-    renderLoginView();
+    renderLoginView(() => {
+      showView('app');
+    });
   } else if (viewName === 'app') {
     renderAppView();
   }
