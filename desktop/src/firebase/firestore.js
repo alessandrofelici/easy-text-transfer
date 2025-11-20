@@ -1,5 +1,5 @@
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, addDoc, getDoc, doc, updateDoc } = require('firebase/firestore');
+const { getFirestore, collection, addDoc, getDoc, doc, updateDoc, setDoc } = require('firebase/firestore');
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = require('firebase/auth');
 const firebaseConfig = require('../../../shared/firebase.config.json');
 
@@ -8,22 +8,33 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+let userId = null;
+
 const saveText = async (text) => {
-  const userRef = doc(db, 'users', '4j5rXHDUkamtxZMm3EBF');
-  await updateDoc(userRef, { text });
-  console.log("Saved");
+  if (userId) {
+    const docRef = doc(db, 'users', userId);
+    await updateDoc(docRef, { text });
+    console.log("Saved");
+  }
+  else {
+    console.log("User not logged in");
+  }
 };
 
 const loadText = async () => {
-  // TODO add case if user data does not exist yet
-  const docRef = doc(db, 'users', '4j5rXHDUkamtxZMm3EBF');
-  const docSnap = await getDoc(docRef);
+  if (userId) {
+    const docRef = doc(db, 'users', userId);
+    const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    return docSnap.data().text
+    if (docSnap.exists()) {
+      return docSnap.data().text
+    }
+    else {
+      console.log("User not found");
+    }
   }
   else {
-    console.log("User not found");
+    console.log("User not logged in");
   }
 };
 
@@ -37,6 +48,7 @@ const signUp = async (email, password) => {
       // ...
       console.log(user)
     })
+    .then(() => createUser(user))
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -53,6 +65,7 @@ const signIn = async (email, password) => {
       user = userCredential.user;
       // ...
       console.log(user)
+      userId = user.uid
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -62,24 +75,18 @@ const signIn = async (email, password) => {
   return user ? true : false;
 }
 
+const createUser = async (user) => {
+  try {
+    await setDoc(doc(db, "users", user.uid), {
+      name: user.email,
+      text: ""
+    });
+    userId = user.uid
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
 
-// TODO: Expand to more users
-// -> separate create & edit functions
-// -> more ids in users
-
-// const createUser = async (text) => {
-//   try {
-//     const docRef = await addDoc(collection(db, "users"), {
-//       name: "CHANGE ME",
-//       text: text
-//     });
-//     console.log("Document written with ID: ", docRef.id);
-//     // TOOD save this internally
-//   } catch (e) {
-//     console.error("Error adding document: ", e);
-//   }
-
-//   console.log("Saved");
-// };
+  console.log("Saved");
+};
 
 module.exports = { saveText, loadText, signIn, signUp };
