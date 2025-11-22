@@ -1,8 +1,10 @@
 import { Stack } from "expo-router";
+import AuthProvider from "./authContext";
+import { useAuth } from "./authContext";
 
-let isLoggedIn = false;
+function RootLayoutNav() {
+  const { isLoggedIn } = useAuth();
 
-export default function RootLayout() {
   return (
     <Stack>
       <Stack.Protected guard={!isLoggedIn}>
@@ -10,8 +12,16 @@ export default function RootLayout() {
       </Stack.Protected>
 
       <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen name="private" />
+        <Stack.Screen name="private/index" />
       </Stack.Protected>
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }
